@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>108課綱：高二數學A與數學B選修指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Chosen Palette: Kang Chiao Linkou Theme - Plum Purple (Math B / Primary), Teal (Math A), Gold (Accent) -->
+    <!-- Application Structure Plan: The SPA is structured as an interactive dashboard with four main thematic tabs: "核心差異比較" (Core Differences), "歷年分數分析" (Historical Score Analysis), "大學學群地圖" (University Pathways), and "選課決策指南" (Decision Wizard). This linear flow first builds foundational knowledge, then backs it up with objective exam data, shows the real-world university implications, and finally guides the user to a tailored decision. -->
+    <!-- Visualization & Content Choices: 
+         1. Goal: Compare Math A/B traits -> Viz: Radar Chart (Chart.js) -> Interaction: Hover for details -> Justification: Shows multidimensional differences intuitively. 
+         2. Goal: Show difficulty trends over time -> Viz: Interactive Line Chart (Chart.js) -> Interaction: Tooltip hover to compare scores across years -> Justification: Clearly distinguishes Math A's difficulty (lower scores) vs Math B's relative accessibility.
+         3. Goal: Organize University requirements -> Viz: Interactive Card Grid -> Interaction: Filter by Math A/Math B -> Justification: Allows quick filtering without reading dense text. 
+         4. Goal: Apply the "3-Step Strategy" -> Viz: Interactive Q&A Wizard -> Interaction: Button selections -> Justification: Turns complex textual advice into a personalized experience. 
+         Library/Method: Tailwind for layout, Chart.js for charts, Vanilla JS for interactivity. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            background-color: #faf9f6;
+            color: #333333;
+            font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 康橋林口校區風格配色：湖水綠(數A) 與 校區紫(數B) */
+        .math-a-color {
+            color: #009E96;
+        }
+
+        .math-a-bg {
+            background-color: #009E96;
+        }
+
+        .math-a-border {
+            border-color: #009E96;
+        }
+
+        .math-b-color {
+            color: #8A0F7C;
+        }
+
+        .math-b-bg {
+            background-color: #8A0F7C;
+        }
+
+        .math-b-border {
+            border-color: #8A0F7C;
+        }
+
+        .btn-hover-effect {
+            transition: all 0.2s ease;
+        }
+
+        .btn-hover-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col bg-[#f8f9fa]">
+
+    <header class="bg-[#8A0F7C] border-b-4 border-[#C5A922] pt-8 pb-6 px-4 shadow-md">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-3 tracking-wide">🎯 108課綱：高二數學A與數學B選修指南</h1>
+            <p class="text-lg text-gray-200 max-w-2xl mx-auto">專為家長打造的五分鐘完全解析與策略！帶您快速釐清方向，陪伴孩子做出最合適的選課決定。</p>
+            <p class="text-md text-[#C5A922] mt-3 font-semibold tracking-wider">林口康橋國際學校G10數學教師提供</p>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-4 py-8">
+
+        <nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+            <button onclick="switchTab('tab-comparison')" id="btn-comparison"
+                class="px-5 py-3 rounded-full font-medium bg-[#8A0F7C] text-white btn-hover-effect shadow-md">📊
+                核心差異比較</button>
+            <button onclick="switchTab('tab-assessment')" id="btn-assessment"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">🧑‍🏫
+                數A能力檢核</button>
+            <button onclick="switchTab('tab-scores')" id="btn-scores"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">📈
+                歷年分數分析</button>
+            <button onclick="switchTab('tab-pathways')" id="btn-pathways"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">🏛️
+                大學學群地圖</button>
+            <button onclick="switchTab('tab-wizard')" id="btn-wizard"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">🧭
+                專屬選課決策</button>
+        </nav>
+
+        <!-- 分頁 1: 核心差異 -->
+        <section id="tab-comparison"
+            class="tab-content active bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#8A0F7C] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">數A與數B的核心差異</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    本區塊透過數據視覺化與重點整理，協助家長快速了解數學A（重視抽象思考與深度運算）與數學B（重視生活應用與廣泛理解）在學習內容與難度上的本質差異。請參考下方雷達圖與重點卡片，掌握向下相容原則。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="bg-gray-50 rounded-xl p-4 md:p-6">
+                    <h3 class="text-center font-semibold text-gray-700 mb-4">能力與特質需求分析圖</h3>
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white border-l-4 math-a-border shadow-sm rounded-r-xl p-5">
+                        <h3 class="text-xl font-bold math-a-color mb-2">📐 數學A (Math A)</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li><span class="font-semibold">適合對象：</span> 高數學需求（理、工、醫、農、頂大商管）</li>
+                            <li><span class="font-semibold">學習內容：</span> 內容較深、銜接大學微積分 (空間向量、三階行列式)</li>
+                            <li><span class="font-semibold">考試難度：</span> 較難，鑑別度高，適合數理拔尖</li>
+                            <li><span class="font-semibold text-green-600">優勢：</span> 考數A的學生通常可以輕鬆跨考數B（向下相容）。</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white border-l-4 math-b-border shadow-sm rounded-r-xl p-5">
+                        <h3 class="text-xl font-bold math-b-color mb-2">📊 數學B (Math B)</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li><span class="font-semibold">適合對象：</span> 低至中數學需求（文、法、藝術、多數商管）</li>
+                            <li><span class="font-semibold">學習內容：</span> 內容生活化、跨領域應用 (單點透視、圓錐截痕)</li>
+                            <li><span class="font-semibold">考試難度：</span> 中等，重視閱讀理解與生活情境題</li>
+                            <li><span class="font-semibold text-red-500">風險：</span> 數B轉數A非常困難，需補齊大量深度運算單元。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分頁 1.5: 數A能力自我檢核 (NEW) -->
+        <section id="tab-assessment"
+            class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#009E96] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">數學老師的真心話：你真的適合讀數A嗎？</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    很多同學因為「想保留選擇權」而盲目選擇數A，卻在高二面臨巨大的挫折。作為數學老師，我建議家長與同學透過高一的「真實學習體感」，誠實檢視以下四大核心能力指標。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- 檢核點 1 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#009E96]"></div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">🧠</span> 指標一：運算耐心與細心度
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-3">數A的計算步驟繁瑣（如：多項式除法、未來的空間幾何）。</p>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li class="flex items-start gap-2"><span class="text-[#009E96] font-bold shrink-0">✓
+                                適合數A：</span><span>算錯時願意回頭找錯誤，能耐住性子完成繁雜的計算。</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-500 font-bold shrink-0">✗
+                                警訊：</span><span>計算過程容易跳步驟、常粗心，遇到長題目就想直接放棄。</span></li>
+                    </ul>
+                </div>
+
+                <!-- 檢核點 2 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#009E96]"></div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">🧊</span> 指標二：圖形與空間直覺
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-3">高二數A有大量三角函數與空間向量，極度依賴幾何想像力。</p>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li class="flex items-start gap-2"><span class="text-[#009E96] font-bold shrink-0">✓
+                                適合數A：</span><span>對於高一的直線與圓、立體圖形，能自己畫圖輔助思考。</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-500 font-bold shrink-0">✗
+                                警訊：</span><span>看到圖形題就害怕，習慣只背公式帶數字，無法將代數與圖形連結。</span></li>
+                    </ul>
+                </div>
+
+                <!-- 檢核點 3 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#009E96]"></div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">🧩</span> 指標三：面對陌生題型的態度
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-3">數A考題變化多端，很少有「背熟題型就能拿高分」的情況。</p>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li class="flex items-start gap-2"><span class="text-[#009E96] font-bold shrink-0">✓
+                                適合數A：</span><span>遇到沒看過的題目，會嘗試用學過的觀念拆解、推導。</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-500 font-bold shrink-0">✗
+                                警訊：</span><span>只要題目沒在講義上看過，就會直接發呆或等老師講解。</span></li>
+                    </ul>
+                </div>
+
+                <!-- 檢核點 4 -->
+                <div
+                    class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#009E96]"></div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">⏱️</span> 指標四：高一學習的「體力條」
+                    </h3>
+                    <p class="text-gray-600 text-sm mb-3">高二數A的難度與份量是高一數學的 1.5 到 2 倍。</p>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li class="flex items-start gap-2"><span class="text-[#009E96] font-bold shrink-0">✓
+                                適合數A：</span><span>高一數學能維持在班級中上，且讀起來「還有餘裕」。</span></li>
+                        <li class="flex items-start gap-2"><span class="text-red-500 font-bold shrink-0">✗
+                                警訊：</span><span>高一數學已耗費八成讀書時間，其他科被拖累，成績卻仍在及格邊緣。</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-[#fcf8fa] border border-[#8A0F7C]/30 rounded-xl p-6 shadow-sm text-center">
+                <h4 class="text-lg font-bold text-[#8A0F7C] mb-2">👨‍🏫 老師的最終忠告</h4>
+                <p class="text-gray-700 leading-relaxed">如果孩子在上述指標中出現 <span class="font-bold text-red-500">3
+                        個以上的警訊</span>，請強烈考慮選擇「數學 B」。<br>高中階段，<span
+                        class="font-bold border-b-2 border-[#C5A922]">「自信心」比「保留選擇權」更重要</span>。在數B取得高分建立自信，將省下來的時間投資在英文或專業學科上，往往能發揮更大優勢，申請到更理想的大學校系！
+                </p>
+            </div>
+        </section>
+
+        <!-- 分頁 2: 歷年分數分析 (NEW) -->
+        <section id="tab-scores" class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#8A0F7C] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">歷年學測分數與難易度分析</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    自108課綱實施以來（111-114學年度），數學A與數學B在考題難易度與給分標準上呈現出穩定的差異。透過以下數據趨勢，您可以更客觀地評估孩子的落點與跨考策略。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-6">
+                <!-- 趨勢圖 -->
+                <div class="bg-gray-50 rounded-xl p-4 md:p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-center font-semibold text-gray-700 mb-4">近四年學測 頂標與均標 趨勢圖</h3>
+                    <div class="chart-container">
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-gray-500 mt-3">* 滿分為15級分，資料來源：大考中心 (111-114學年度)</p>
+                </div>
+
+                <!-- 重點解析 -->
+                <div class="space-y-4">
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:border-[#009E96] transition">
+                        <h4 class="text-lg font-bold math-a-color flex items-center gap-2 mb-2">
+                            <span class="text-xl">⚔️</span> 數A：頂尖對決，門檻最高
+                        </h4>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            數A的頂標多落在11~12級分（111年首屆甚至僅有10級分），是所有學測科目中**最難取得高分**的一科。其計算量大、抽象度高，主要作為頂尖理工醫農科系篩選菁英的關鍵指標。</p>
+                    </div>
+                    <div
+                        class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:border-[#8A0F7C] transition">
+                        <h4 class="text-lg font-bold math-b-color flex items-center gap-2 mb-2">
+                            <span class="text-xl">🛡️</span> 數B：親民穩定，投資報酬率高
+                        </h4>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            數B的頂標穩定維持在12級分以上，難度相對親民。考題著重閱讀理解與圖表應用，對於不擅長複雜幾何運算但邏輯清晰的學生來說，是**鞏固總級分、提升申請優勢**的防守熱區。</p>
+                    </div>
+                    <div class="bg-[#fcf8fa] border border-[#8A0F7C]/30 rounded-xl p-5 shadow-sm">
+                        <h4 class="text-lg font-bold text-gray-800 flex items-center gap-2 mb-2">
+                            <span class="text-xl">💡</span> 跨考迷思破解：數A能秒殺數B？
+                        </h4>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            許多人以為「準備數A就能輕鬆跨考數B滿分」，但近年大考中心刻意增加**數B專屬單元**的比重（如：圓錐截痕、單點透視、地球經緯度等，約佔1/5）。自然組學生若無額外花心力準備這些獨有單元，跨考時並不一定能佔據絕對優勢！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分頁 3: 大學學群地圖 -->
+        <section id="tab-pathways" class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#8A0F7C] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">大學學群參採地圖</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    大學端在個人申請時會明確規定採計科目。本區塊將18學群依據數學需求分類。您可以透過上方按鈕進行篩選，快速檢視孩子感興趣的學系究竟需要哪一種數學能力。特別注意「商管學群」在頂尖大學與一般大學的差異陷阱！
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mb-6 justify-center">
+                <button onclick="filterPathways('all')"
+                    class="filter-btn active px-4 py-2 rounded bg-[#8A0F7C] text-white font-medium transition hover:opacity-90">顯示全部</button>
+                <button onclick="filterPathways('math-a')"
+                    class="filter-btn px-4 py-2 rounded bg-white text-gray-700 border math-a-border font-medium transition hover:math-a-bg hover:text-white">🔴
+                    非數A不可</button>
+                <button onclick="filterPathways('math-b')"
+                    class="filter-btn px-4 py-2 rounded bg-white text-gray-700 border math-b-border font-medium transition hover:math-b-bg hover:text-white">🟢
+                    數B即可/不看</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="pathways-grid">
+            </div>
+        </section>
+
+        <!-- 分頁 4: 專屬選課決策 -->
+        <section id="tab-wizard" class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#8A0F7C] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">專屬選課決策指南</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    沒有絕對的好壞，只有「適不適合」。本區塊將升學輔導的「三步選修策略」轉化為互動問答。建議您與孩子一起討論以下問題，系統將根據孩子的目標學群、學習現況與意願，給出最實際的選修建議。</p>
+            </div>
+
+            <div id="wizard-container"
+                class="max-w-2xl mx-auto bg-gray-50 rounded-xl p-6 md:p-10 text-center shadow-inner border border-gray-200">
+
+                <div id="wizard-start">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">準備好找出最適合的數學路線了嗎？</h3>
+                    <p class="text-gray-600 mb-6">只需回答幾個簡單的問題，我們將為您提供方向。</p>
+                    <button onclick="startWizard()"
+                        class="px-8 py-3 rounded-full font-bold bg-[#C5A922] text-white btn-hover-effect text-lg shadow-md">開始測驗
+                        🚀</button>
+                </div>
+
+                <div id="wizard-q1" class="hidden">
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">步驟一：目標校系</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">孩子目前對未來大學的「目標學群」有明確方向嗎？</h3>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="answerQ1('A')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">明確想讀
+                            理工、資訊、醫農，或想拚頂尖大學商管系。</button>
+                        <button onclick="answerQ1('B')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">明確想讀
+                            文史哲、法政、藝術、語言傳播或多數私立商管。</button>
+                        <button onclick="answerQ1('U')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">完全沒方向，還在摸索中。</button>
+                    </div>
+                </div>
+
+                <div id="wizard-q2" class="hidden">
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">步驟二：學習現況與意願</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">孩子高一的數學學習狀況與抗壓性如何？</h3>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="answerQ2('struggle')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">學得非常痛苦、成績持續低迷，且不想強迫自己。</button>
+                        <button onclick="answerQ2('okay')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">成績中等，不排斥數學，願意為了保留選擇權挑戰看看。</button>
+                    </div>
+                </div>
+
+                <div id="wizard-result" class="hidden">
+                    <div id="result-content" class="p-6 rounded-xl bg-white border shadow-sm">
+                    </div>
+                    <button onclick="resetWizard()"
+                        class="mt-6 px-6 py-2 rounded-full text-gray-600 border border-gray-300 hover:bg-gray-100 transition">重新測驗</button>
+                </div>
+
+            </div>
+
+            <div class="mt-10 border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">🛠️ 必備查詢工具與參考資源 (建議加入書籤)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <a href="https://collego.edu.tw/" target="_blank"
+                        class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-[#8A0F7C] hover:bg-white transition flex items-center gap-3">
+                        <span class="text-2xl">🎓</span>
+                        <div>
+                            <div class="font-bold text-gray-800">Collego 輔助系統</div>
+                            <div class="text-sm text-gray-600">探索興趣與18學群，查看各學系修課要求。</div>
+                        </div>
+                    </a>
+                    <a href="https://srecruit.moe.edu.tw/mathsys/" target="_blank"
+                        class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-[#8A0F7C] hover:bg-white transition flex items-center gap-3">
+                        <span class="text-2xl">🏛️</span>
+                        <div>
+                            <div class="font-bold text-gray-800">參採數學學測科目查詢系統</div>
+                            <div class="text-sm text-gray-600">教育部官方系統，一秒查出校系看數A還數B！</div>
+                        </div>
+                    </a>
+                    <a href="https://www.cac.edu.tw/apply115/index.php" target="_blank"
+                        class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-[#8A0F7C] hover:bg-white transition flex items-center gap-3">
+                        <span class="text-2xl">🏫</span>
+                        <div>
+                            <div class="font-bold text-gray-800">大學甄選入學委員會</div>
+                            <div class="text-sm text-gray-600">官方招生簡章，確認各校系最終採計與檢定標準。</div>
+                        </div>
+                    </a>
+                    <a href="https://www.unews.com.tw/News/Info/3556" target="_blank"
+                        class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-[#8A0F7C] hover:bg-white transition flex items-center gap-3">
+                        <span class="text-2xl">📰</span>
+                        <div>
+                            <div class="font-bold text-gray-800">大學問：選課數A或數B？</div>
+                            <div class="text-sm text-gray-600">深入解析數A、數B差異與各入學管道參採情形。</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#8A0F7C] border-t-4 border-[#C5A922] text-gray-200 text-center py-6 mt-auto">
+        <p class="mb-2">108課綱的精神在於「適性揚才」。與其讓孩子在不擅長的領域痛苦掙扎，不如將時間投資在能讓他發光發熱的學科上。</p>
+        <p class="text-sm text-gray-300">資料來源：大學招生委員會聯合會、大學甄選入學委員會、Collego、大學問、高中輔導資訊</p>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('bg-[#8A0F7C]', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+
+            const activeBtnId = tabId.replace('tab-', 'btn-');
+            const activeBtn = document.getElementById(activeBtnId);
+            activeBtn.classList.remove('bg-white', 'text-gray-700');
+            activeBtn.classList.add('bg-[#8A0F7C]', 'text-white');
+        }
+
+        // Radar Chart (Tab 1)
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['抽象思考深度', '複雜運算需求', '跨領域生活應用', '學測考試難度', '轉考另科容易度'],
+                datasets: [{
+                    label: '數學A',
+                    data: [5, 5, 2, 5, 5],
+                    backgroundColor: 'rgba(0, 158, 150, 0.2)', /* 湖水綠 */
+                    borderColor: 'rgba(0, 158, 150, 1)',
+                    pointBackgroundColor: 'rgba(0, 158, 150, 1)',
+                    borderWidth: 2
+                }, {
+                    label: '數學B',
+                    data: [2, 2, 5, 3, 1],
+                    backgroundColor: 'rgba(138, 15, 124, 0.2)', /* 林口校區紫 */
+                    borderColor: 'rgba(138, 15, 124, 1)',
+                    pointBackgroundColor: 'rgba(138, 15, 124, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: {
+                            font: { size: 12, family: "'Helvetica Neue', 'Microsoft JhengHei', sans-serif" },
+                            color: '#4b5563'
+                        },
+                        ticks: { display: false, min: 0, max: 5 }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 14 } } },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                let val = context.raw;
+                                if (val === 5) return label + '極高/非常容易';
+                                if (val === 3) return label + '中等';
+                                if (val === 2) return label + '較低';
+                                if (val === 1) return label + '極低/非常困難';
+                                return label + val;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Line Chart (Tab 2) - Historical Scores
+        const ctxScore = document.getElementById('scoreChart').getContext('2d');
+        new Chart(ctxScore, {
+            type: 'line',
+            data: {
+                labels: ['111學測', '112學測', '113學測', '114學測'],
+                datasets: [
+                    {
+                        label: '數A 頂標',
+                        data: [10, 11, 12, 11],
+                        borderColor: '#009E96',
+                        backgroundColor: '#009E96',
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.3
+                    },
+                    {
+                        label: '數B 頂標',
+                        data: [13, 12, 12, 12],
+                        borderColor: '#8A0F7C',
+                        backgroundColor: '#8A0F7C',
+                        borderWidth: 3,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.3
+                    },
+                    {
+                        label: '數A 均標',
+                        data: [6, 7, 7, 6],
+                        borderColor: '#009E96',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 4,
+                        tension: 0.3
+                    },
+                    {
+                        label: '數B 均標',
+                        data: [8, 7, 6, 6],
+                        borderColor: '#8A0F7C',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointRadius: 4,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 15,
+                        title: { display: true, text: '學測級分' },
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 20 } },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#333',
+                        bodyColor: '#555',
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        padding: 10
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+
+        const pathwaysData = [
+            { name: "電機、資工", category: "math-a", desc: "理工與資訊科系", type: "重度數學需求", icon: "💻" },
+            { name: "物理、化學、機械", category: "math-a", desc: "理工與資訊科系", type: "重度數學需求", icon: "⚙️" },
+            { name: "醫學、牙醫", category: "math-a", desc: "醫農與生科系", type: "重度數學需求", icon: "⚕️" },
+            { name: "藥學、獸醫", category: "math-a", desc: "醫農與生科系", type: "重度數學需求", icon: "🔬" },
+            { name: "頂大財金、會計、企管", category: "math-a", desc: "商管學群 (台政交等)", type: "⚠️ 大學需微積分", icon: "📈" },
+
+            { name: "中文、歷史、哲學", category: "math-b", desc: "文法社會學群", type: "輕度數學需求", icon: "📚" },
+            { name: "法律、政治、社會", category: "math-b", desc: "文法社會學群", type: "輕度數學需求", icon: "⚖️" },
+            { name: "外文、新聞、廣電", category: "math-b", desc: "語言與傳播學群", type: "輕度數學需求", icon: "🎙️" },
+            { name: "美術、音樂、部分設計", category: "math-b", desc: "藝術與設計學群", type: "輕度數學需求", icon: "🎨" },
+            { name: "私立與中字輩商管", category: "math-b", desc: "多數商管科系", type: "接受數B或皆可", icon: "📊" }
+        ];
+
+        function renderPathways(filter) {
+            const grid = document.getElementById('pathways-grid');
+            grid.innerHTML = '';
+
+            pathwaysData.forEach(item => {
+                if (filter === 'all' || item.category === filter) {
+                    const isMathA = item.category === 'math-a';
+                    const borderColor = isMathA ? 'math-a-border' : 'math-b-border';
+                    const tagColor = isMathA ? 'math-a-color bg-teal-50' : 'math-b-color bg-fuchsia-50';
+                    const tagText = isMathA ? '非數A不可' : '數B即可';
+
+                    const card = document.createElement('div');
+                    card.className = `bg-gray-50 rounded-xl p-5 border-t-4 ${borderColor} shadow-sm`;
+                    card.innerHTML = `
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">${item.icon}</span>
+                            <h3 class="text-lg font-bold text-gray-800">${item.name}</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">${item.desc}</p>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-medium text-gray-500">${item.type}</span>
+                            <span class="px-2 py-1 rounded font-bold ${tagColor}">${tagText}</span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        function filterPathways(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-[#8A0F7C]', 'text-white', 'active');
+                if (!btn.classList.contains('bg-white')) {
+                    btn.classList.add('bg-gray-200', 'text-gray-800');
+                }
+            });
+
+            const clickedBtn = event.currentTarget;
+            if (type === 'all') {
+                clickedBtn.classList.remove('bg-gray-200', 'text-gray-800');
+                clickedBtn.classList.add('bg-[#8A0F7C]', 'text-white');
+            }
+
+            renderPathways(type);
+        }
+
+        renderPathways('all');
+
+        let wizardState = { q1: null, q2: null };
+
+        function startWizard() {
+            document.getElementById('wizard-start').classList.add('hidden');
+            document.getElementById('wizard-q1').classList.remove('hidden');
+        }
+
+        function answerQ1(answer) {
+            wizardState.q1 = answer;
+            document.getElementById('wizard-q1').classList.add('hidden');
+
+            if (answer === 'A') {
+                showResult('A');
+            } else if (answer === 'B') {
+                showResult('B');
+            } else {
+                document.getElementById('wizard-q2').classList.remove('hidden');
+            }
+        }
+
+        function answerQ2(answer) {
+            wizardState.q2 = answer;
+            document.getElementById('wizard-q2').classList.add('hidden');
+
+            if (answer === 'struggle') {
+                showResult('B_ESCAPE');
+            } else {
+                showResult('A_TRY');
+            }
+        }
+
+        function showResult(type) {
+            const container = document.getElementById('wizard-result');
+            const content = document.getElementById('result-content');
+            container.classList.remove('hidden');
+
+            content.className = 'p-6 rounded-xl border-2 shadow-sm text-left ';
+
+            if (type === 'A') {
+                content.classList.add('math-a-border', 'bg-teal-50');
+                content.innerHTML = `
+                    <h3 class="text-2xl font-bold math-a-color mb-3">🎯 建議選擇：數學 A</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">既然目標明確是理工醫農或頂尖商管，**必選數A**。請為孩子做好心理建設，這條路數學運算要求深，但能精準對接未來大學科系的需求。</p>
+                `;
+            } else if (type === 'B') {
+                content.classList.add('math-b-border', 'bg-fuchsia-50');
+                content.innerHTML = `
+                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 建議選擇：數學 B</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">目標明確為文法藝術社會，請**果斷選數B**。減輕數學學習壓力，將省下來的時間拿去拚好國文、英文與社會，在文組科系會更有競爭力！</p>
+                `;
+            } else if (type === 'B_ESCAPE') {
+                content.classList.add('math-b-border', 'bg-fuchsia-50');
+                content.innerHTML = `
+                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 建議選擇：數學 B</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">評估孩子的數學學習現況與抗壓性，請**不要為了「保留選擇權」而硬選數A**。這會導致高中生活極度受挫。選擇數B，讓孩子找回學習自信更重要。</p>
+                `;
+            } else if (type === 'A_TRY') {
+                content.classList.add('math-a-border', 'bg-teal-50');
+                content.innerHTML = `
+                    <h3 class="text-2xl font-bold math-a-color mb-3">🎯 建議先挑戰：數學 A</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">在完全沒方向且不排斥數學的情況下，建議先修數A。因為**「向下相容」原則**，高三若發現想讀文組，學測依然可以跨考數B；但若選數B，未來想考理工則幾乎不可能補救落差。</p>
+                `;
+            }
+        }
+
+        function resetWizard() {
+            wizardState = { q1: null, q2: null };
+            document.getElementById('wizard-result').classList.add('hidden');
+            document.getElementById('wizard-start').classList.remove('hidden');
+        }
+
+    </script>
+</body>
+
+</html>
