@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高一生存手冊：選班群與數A數B全攻略</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #faf9f6;
+            color: #333333;
+            font-family: 'Helvetica Neue', Arial, 'Microsoft JhengHei', sans-serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 康橋林口校區風格配色：湖水綠(理/數A) 與 校區紫(文/數B) */
+        .math-a-color {
+            color: #009E96;
+        }
+
+        .math-a-bg {
+            background-color: #009E96;
+        }
+
+        .math-a-border {
+            border-color: #009E96;
+        }
+
+        .math-b-color {
+            color: #8A0F7C;
+        }
+
+        .math-b-bg {
+            background-color: #8A0F7C;
+        }
+
+        .math-b-border {
+            border-color: #8A0F7C;
+        }
+
+        .btn-hover-effect {
+            transition: all 0.2s ease;
+        }
+
+        .btn-hover-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col bg-[#f8f9fa]">
+
+    <header class="bg-[#1a1a2e] border-b-4 border-[#C5A922] pt-8 pb-6 px-4 shadow-md">
+        <div class="max-w-5xl mx-auto text-center">
+            <span
+                class="inline-block bg-[#C5A922] text-black text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-wider">高一專屬
+                🚀</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-3 tracking-wide">高一生存手冊：選班群與數學A/B全攻略</h1>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                這不是給家長看的官腔指南。這是學長姐的血淚經驗，幫你搞懂「文組/理組」和「數A/數B」到底該怎麼挑，為你的高中生活排雷！</p>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-6xl mx-auto px-4 py-8">
+
+        <nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+            <button onclick="switchTab('tab-reality')" id="btn-reality"
+                class="px-5 py-3 rounded-full font-medium bg-[#1a1a2e] text-white btn-hover-effect shadow-md">⚔️
+                班群與數學的殘酷真相</button>
+            <button onclick="switchTab('tab-assessment')" id="btn-assessment"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">🔍
+                你是哪種屬性？</button>
+            <button onclick="switchTab('tab-pathways')" id="btn-pathways"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">🗺️
+                大學科系避雷地圖</button>
+            <button onclick="switchTab('tab-wizard')" id="btn-wizard"
+                class="px-5 py-3 rounded-full font-medium bg-white text-gray-700 border border-gray-300 btn-hover-effect shadow-sm">🧭
+                我的未來路線導航</button>
+        </nav>
+
+        <!-- 分頁 1: 殘酷真相 -->
+        <section id="tab-reality"
+            class="tab-content active bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#1a1a2e] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">破除迷思：班群與數學的綁定關係</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    很多高一學弟妹以為「數A數B可以隨便選拉」，錯！你的「自然/社會班群」才是決定你高中三年在哪裡打怪的關鍵，而班群幾乎決定了你的數學難度。看清楚下面的綁定規則。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 理組 -->
+                <div class="bg-teal-50 border-t-4 border-[#009E96] rounded-xl p-6 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-2 right-4 text-4xl opacity-20">🔬</div>
+                    <h3 class="text-xl font-bold text-[#009E96] mb-4 flex items-center gap-2">
+                        <span>🧪</span> 理組 (自然班群) ＝ 幾乎綁定「數A」
+                    </h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed tracking-wide">
+                        未來的工程師、醫生、物理學家。你們的高中會被物理、化學、生物填滿，而這些科目都需要強大的**數學A**作為運算基礎。
+                    </p>
+                    <div class="bg-white p-4 rounded-lg border border-teal-100 mb-4">
+                        <span class="text-red-500 font-bold text-sm">血淚警告：</span>
+                        <span class="text-gray-600 text-sm">不要以為選了理組還可以輕鬆讀數B。如果數A被當掉，你的物理跟化學大概率也會跟著陣亡。這是硬核玩家專屬路線。</span>
+                    </div>
+                </div>
+
+                <!-- 文組 -->
+                <div
+                    class="bg-fuchsia-50 border-t-4 border-[#8A0F7C] rounded-xl p-6 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-2 right-4 text-4xl opacity-20">📚</div>
+                    <h3 class="text-xl font-bold text-[#8A0F7C] mb-4 flex items-center gap-2">
+                        <span>🏛️</span> 文組 (社會班群) ＝ 預設「數B」(有例外！)
+                    </h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed tracking-wide">
+                        未來的律師、設計師、作家、外商PM。你們的主戰場是歷史、地理、公民。數學對你們來說，只要能應付生活跟邏輯即可，所以**數B**是你們的快樂老家。
+                    </p>
+                    <div class="bg-white p-4 rounded-lg border border-fuchsia-100 mb-4">
+                        <span class="text-[#C5A922] font-bold text-sm">隱藏陷阱：</span>
+                        <span
+                            class="text-gray-600 text-sm">如果你是文組，但未來想考「台政交的商管科系」，抱歉，你必須越級打怪，在文組修「數A」。這是最考驗意志力的路線。</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-gray-50 border border-gray-200 rounded-xl p-6 text-center">
+                <h4 class="text-lg font-bold text-gray-800 mb-2">💡 學長姐箴言：向下相容法則</h4>
+                <p class="text-gray-600">「讀數 A 可以跨考數 B，因為數 A 涵蓋了大部分運算；但讀數 B 幾乎不可能裸考數 A。」<br>所以很多人會說『先選數A保留機會』，但前提是...
+                    **你不能在高二就被數A打到喪失自信！**</p>
+            </div>
+        </section>
+
+        <!-- 分頁 2: 屬性檢核 -->
+        <section id="tab-assessment"
+            class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#009E96] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">測測你的天賦樹：你是哪種屬性？</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    不要再說「我以後可能用得到」這種空話了。誠實面對自己高一的學習體感，看看下面的情境，你中了幾個箭？這決定了你到底適不適合點「數A」跟「理科」的技能點。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- 檢核點 1 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">🤯</span> 算錯一個正負號...
+                    </h3>
+                    <ul class="text-sm text-gray-700 space-y-3">
+                        <li class="flex items-start gap-2 bg-teal-50 p-2 rounded">
+                            <span class="text-[#009E96] font-bold shrink-0">理科腦：</span>
+                            <span>「可惡！我知道邏輯是對的，只是粗心，我重算一次找出bug！」（有耐心面對繁瑣計算）</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-fuchsia-50 p-2 rounded">
+                            <span class="text-red-500 font-bold shrink-0">文科腦：</span>
+                            <span>「煩死了又是計算錯誤！這題目根本在找碴，不想算了！」（對長篇計算極度不耐煩）</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 檢核點 2 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">🧊</span> 看到立體幾何圖形...
+                    </h3>
+                    <ul class="text-sm text-gray-700 space-y-3">
+                        <li class="flex items-start gap-2 bg-teal-50 p-2 rounded">
+                            <span class="text-[#009E96] font-bold shrink-0">理科腦：</span>
+                            <span>腦中可以自動旋轉那個形狀，大概知道輔助線畫哪裡可以切出解題關鍵。（擁有空間直覺，數A無障礙）</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-fuchsia-50 p-2 rounded">
+                            <span class="text-red-500 font-bold shrink-0">文科腦：</span>
+                            <span>這到底什麼鬼東西，紙上明明是平的為什麼說它是立方的？只能死背公式帶數字。（高二數A空間向量會非常痛苦）</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 檢核點 3 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">📖</span> 面對長篇大論的講義...
+                    </h3>
+                    <ul class="text-sm text-gray-700 space-y-3">
+                        <li class="flex items-start gap-2 bg-teal-50 p-2 rounded">
+                            <span class="text-[#009E96] font-bold shrink-0">理科腦：</span>
+                            <span>背歷史年代表跟一堆名詞定義比殺了我還痛苦，我寧願去解十道物理題。</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-fuchsia-50 p-2 rounded">
+                            <span class="text-red-500 font-bold shrink-0">文科腦：</span>
+                            <span>讀懂文字脈絡、了解社會現象與歷史沿革，對我來說像聽故事一樣可以吸收。（這是你在社會組拿高分的主場優勢）</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 檢核點 4 -->
+                <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">🔋</span> 目前高一的「體力條」
+                    </h3>
+                    <ul class="text-sm text-gray-700 space-y-3">
+                        <li class="flex items-start gap-2 bg-teal-50 p-2 rounded">
+                            <span class="text-[#009E96] font-bold shrink-0">理科腦：</span>
+                            <span>高一數學跟理化對我來說還有餘裕，可以應付更高強度的挑戰。</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-fuchsia-50 p-2 rounded">
+                            <span class="text-red-500 font-bold shrink-0">文科腦：</span>
+                            <span>光是應付高一數學就已經佔用我 80% 的晚自習時間了，英文跟其他科根本沒空看，而且數學還只考剛好及格！</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="text-center font-bold text-lg text-[#8A0F7C]">如果你的回答多半落在 <span
+                    class="text-red-500">文科腦</span>，請千萬不要為了「虛無飄渺的選擇權」去硬選理組或數A！去文組發光發熱吧！</p>
+        </section>
+
+        <!-- 分頁 3: 避雷地圖 -->
+        <section id="tab-pathways" class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#1a1a2e] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">大學科系避雷地圖</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    在選班群前，你得先知道你的夢想科系會不會在未來坑你。點擊下方按鈕篩選看看，注意那些帶有⚠️警告標誌的「陷阱區」。
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mb-6 justify-center">
+                <button onclick="filterPathways('all')"
+                    class="filter-btn active px-4 py-2 rounded bg-[#1a1a2e] text-white font-medium transition hover:opacity-90">顯示全部</button>
+                <button onclick="filterPathways('math-a')"
+                    class="filter-btn px-4 py-2 rounded bg-white text-gray-700 border math-a-border font-medium transition hover:math-a-bg hover:text-white">🔴
+                    僅限數A (理組主場)</button>
+                <button onclick="filterPathways('math-b')"
+                    class="filter-btn px-4 py-2 rounded bg-white text-gray-700 border math-b-border font-medium transition hover:math-b-bg hover:text-white">🟢
+                    數B可 (文組快樂區)</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="pathways-grid">
+                <!-- Data populated by JS -->
+            </div>
+        </section>
+
+        <!-- 分頁 4: 專屬導航 (Wizard) -->
+        <section id="tab-wizard" class="tab-content bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+            <div class="mb-8 border-l-4 border-[#C5A922] pl-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">我的未來路線導航 (3 步測出命定路線)</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    選班群不是擲骰子。透過以下三個攸關生死的靈魂拷問，學長姐幫你推導出最適合你的生存路線。</p>
+            </div>
+
+            <div id="wizard-container"
+                class="max-w-2xl mx-auto bg-gray-50 rounded-xl p-6 md:p-10 text-center shadow-inner border border-gray-200">
+
+                <div id="wizard-start">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">準備好面對現實了嗎？</h3>
+                    <p class="text-gray-600 mb-6">這不是算命，這是基於學測制度的大數據邏輯推演。</p>
+                    <button onclick="startWizard()"
+                        class="px-8 py-3 rounded-full font-bold bg-[#1a1a2e] text-white btn-hover-effect text-lg shadow-md">開始測驗
+                        🚀</button>
+                </div>
+
+                <div id="wizard-q1" class="hidden">
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">Step 1：興趣領域</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">你的目標科系，目前偏向哪一邊？</h3>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="answerQ1('sci')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#009E96] hover:bg-teal-50 transition shadow-sm font-medium text-gray-700">
+                            1. 【絕對理科】寫程式、弄電機、搞化學、做醫生，我的目標很明確。
+                        </button>
+                        <button onclick="answerQ1('art')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#8A0F7C] hover:bg-fuchsia-50 transition shadow-sm font-medium text-gray-700">
+                            2. 【絕對文科】寫作、法律、設計、外文，我對方程式跟做實驗徹底沒興趣。
+                        </button>
+                        <button onclick="answerQ1('undecided')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">
+                            3. 【選擇困難】我不知道...商管好像也可以，文理都行，還在迷茫。
+                        </button>
+                    </div>
+                </div>
+
+                <div id="wizard-q2" class="hidden">
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">Step 2：學習極限測試</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">在還沒決定目標前，你對高一學習的「真實體感」是？</h3>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="answerQ2('struggle')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#8A0F7C] transition shadow-sm font-medium text-gray-700">
+                            1. 數學跟物理化學讓我痛苦萬分，每次段考都在及格邊緣掙扎，完全靠背。
+                        </button>
+                        <button onclick="answerQ2('average')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">
+                            2. 數理大約班上中等，沒有愛但可以硬扛，靠刷題能拿分數。
+                        </button>
+                        <button onclick="answerQ2('strong')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#009E96] transition shadow-sm font-medium text-gray-700">
+                            3. 數理成績算有優勢，腦袋轉得快，反而背科讓我很想死。
+                        </button>
+                    </div>
+                </div>
+
+                <div id="wizard-q3" class="hidden">
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">Step 3：殘酷二選一</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">如果你去修了「數A (這會吃掉你一堆時間)」，以下哪種情況比較可能發生？</h3>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="answerQ3('top_biz')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#C5A922] transition shadow-sm font-medium text-gray-700">
+                            1. 雖然數學吃力，但我的英文/國文超級強，我有自信為了考「台政大商管」把數A硬吃下來。
+                        </button>
+                        <button onclick="answerQ3('safe')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">
+                            2. 救命，我的英文也需要急救。如果時間全拿去救數A，我全部學科的總成績會直接核彈級爆炸。我上一般商管就好。
+                        </button>
+                    </div>
+                </div>
+
+                <div id="wizard-result" class="hidden">
+                    <div id="result-content" class="p-6 rounded-xl bg-white border shadow-sm text-left">
+                        <!-- JS injected result -->
+                    </div>
+                    <button onclick="resetWizard()"
+                        class="mt-6 px-6 py-2 rounded-full text-gray-600 border border-gray-300 hover:bg-gray-100 transition">↺
+                        重新測驗</button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#1a1a2e] text-gray-400 text-center py-6 mt-auto">
+        <p class="mb-2 text-sm">選班群不是終點，只是一個遊玩模式的選擇。選你能打得贏的副本去練等！</p>
+        <p class="text-xs">給高一學生的專屬避雷指南 | 祝大家高中順利</p>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('bg-[#1a1a2e]', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            const activeBtn = document.getElementById(tabId.replace('tab-', 'btn-'));
+            activeBtn.classList.remove('bg-white', 'text-gray-700');
+            activeBtn.classList.add('bg-[#1a1a2e]', 'text-white');
+        }
+
+        // 學生版專屬的大學避雷資料
+        const pathwaysData = [
+            { name: "電機/資工/機械", category: "math-a", desc: "理工工程", type: "絕對理組綁定數A", icon: "💻", trap: false },
+            { name: "醫學/牙醫/藥學", category: "math-a", desc: "醫農生科", type: "絕對理組綁定數A", icon: "⚕️", trap: false },
+            { name: "頂尖大學 商管系", category: "math-a", desc: "台政交企管會計", type: "⚠️ 文組生需跨選數A", icon: "📈", trap: true, trapMsg: "許多文組生想到高三才轉商管，發現台大政大商管都看數A，來不及了！" },
+            { name: "心理學系", category: "math-both", desc: "社會/心理", type: "⚠️ 看學校決定！", icon: "🧠", trap: true, trapMsg: "台大理學院心理系看理科+數A，部分私立看文科+數B，選校需極度小心。" },
+            { name: "法律/政治/外文", category: "math-b", desc: "文法社會", type: "純文組快樂數B", icon: "⚖️", trap: false },
+            { name: "多數私立 商管系", category: "math-b", desc: "普大商管/財金", type: "選文組+數B即可", icon: "📊", trap: false },
+            { name: "藝術/設計/傳播", category: "math-b", desc: "設計與大眾傳播", type: "選文組+數B即可", icon: "🎨", trap: false }
+        ];
+
+        function renderPathways(filter) {
+            const grid = document.getElementById('pathways-grid');
+            grid.innerHTML = '';
+
+            pathwaysData.forEach(item => {
+                // Simplified filtering logic for demo
+                const isMatch = filter === 'all' ||
+                    (filter === 'math-a' && (item.category === 'math-a' || item.category === 'math-both')) ||
+                    (filter === 'math-b' && (item.category === 'math-b' || item.category === 'math-both'));
+
+                if (isMatch) {
+                    const isMathA = item.category === 'math-a';
+                    const isTrap = item.trap;
+                    let borderColor = isMathA ? 'border-[#009E96]' : 'border-[#8A0F7C]';
+                    if (item.category === 'math-both') borderColor = 'border-yellow-400';
+
+                    let tagColor = isMathA ? 'text-[#009E96] bg-teal-50' : 'text-[#8A0F7C] bg-fuchsia-50';
+                    if (item.category === 'math-both') tagColor = 'text-yellow-700 bg-yellow-50';
+
+                    const card = document.createElement('div');
+                    card.className = `bg-gray-50 rounded-xl p-5 border-t-4 ${borderColor} shadow-sm`;
+
+                    let html = `
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">${item.icon}</span>
+                            <h3 class="text-lg font-bold text-gray-800">${item.name}</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-3">${item.desc}</p>
+                        <div class="flex justify-between items-center text-xs mb-2">
+                            <span class="px-2 py-1 rounded font-bold ${tagColor}">${item.type}</span>
+                        </div>
+                    `;
+
+                    if (isTrap) {
+                        html += `<div class="mt-3 bg-red-50 text-red-700 text-xs p-2 rounded border border-red-100">🔥 <b>避雷提示：</b>${item.trapMsg}</div>`;
+                    }
+
+                    card.innerHTML = html;
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        function filterPathways(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-[#1a1a2e]', 'text-white', 'active');
+                if (!btn.classList.contains('bg-white')) {
+                    btn.classList.add('bg-gray-200', 'text-gray-800');
+                }
+            });
+            const clickedBtn = event.currentTarget;
+            if (type === 'all') {
+                clickedBtn.classList.remove('bg-gray-200', 'text-gray-800');
+                clickedBtn.classList.add('bg-[#1a1a2e]', 'text-white');
+            }
+            renderPathways(type);
+        }
+
+        renderPathways('all');
+
+        // Wizard Logic
+        let wizardState = { q1: null, q2: null, q3: null };
+
+        function startWizard() {
+            document.getElementById('wizard-start').classList.add('hidden');
+            document.getElementById('wizard-q1').classList.remove('hidden');
+        }
+
+        function answerQ1(ans) {
+            wizardState.q1 = ans;
+            document.getElementById('wizard-q1').classList.add('hidden');
+
+            if (ans === 'sci') showResult('SCIENCE_WARRIOR');
+            else if (ans === 'art') showResult('ARTS_ELITE');
+            else document.getElementById('wizard-q2').classList.remove('hidden');
+        }
+
+        function answerQ2(ans) {
+            wizardState.q2 = ans;
+            document.getElementById('wizard-q2').classList.add('hidden');
+
+            if (ans === 'struggle') showResult('ARTS_ELITE');
+            else if (ans === 'strong') showResult('FLEX_EXPLORER');
+            else document.getElementById('wizard-q3').classList.remove('hidden');
+        }
+
+        function answerQ3(ans) {
+            wizardState.q3 = ans;
+            document.getElementById('wizard-q3').classList.add('hidden');
+
+            if (ans === 'top_biz') showResult('TOP_BIZ_HACKER');
+            else showResult('STRATEGIC_RETREAT');
+        }
+
+        function showResult(type) {
+            const container = document.getElementById('wizard-result');
+            const content = document.getElementById('result-content');
+            container.classList.remove('hidden');
+
+            if (type === 'SCIENCE_WARRIOR') {
+                content.className = 'p-6 rounded-xl border-2 border-[#009E96] bg-teal-50 shadow-sm text-left';
+                content.innerHTML = `
+                    <span class="inline-block bg-[#009E96] text-white text-xs font-bold px-2 py-1 rounded mb-2">專屬路線分析</span>
+                    <h3 class="text-2xl font-bold text-[#009E96] mb-3">🛠️ [理組戰士] 理組班群 ＋ 數A</h3>
+                    <p class="text-gray-700 leading-relaxed text-sm">目標很明確，直接選理組出發！未來要面對大量的物理、化學化簡，**數A絕對是你的標配**。這條路沒有捷徑，請做好算數學算到手軟的準備，撐過去，理工醫的窄門就是為你開的。</p>
+                `;
+            } else if (type === 'ARTS_ELITE') {
+                content.className = 'p-6 rounded-xl border-2 border-[#8A0F7C] bg-fuchsia-50 shadow-sm text-left';
+                content.innerHTML = `
+                    <span class="inline-block bg-[#8A0F7C] text-white text-xs font-bold px-2 py-1 rounded mb-2">專屬路線分析</span>
+                    <h3 class="text-2xl font-bold text-[#8A0F7C] mb-3">✨ [文組菁英] 文組班群 ＋ 數B</h3>
+                    <p class="text-gray-700 leading-relaxed text-sm">不要再聽信「理科才有前途」的鬼話了！你的強項在文字、邏輯、社會科學。果斷選擇文組與數B，**把多出來的精力拿去學好英文、刷爆學習歷程**，你在未來的申請舞台上絕對超級耀眼！</p>
+                `;
+            } else if (type === 'STRATEGIC_RETREAT') {
+                content.className = 'p-6 rounded-xl border-2 border-gray-400 bg-gray-50 shadow-sm text-left';
+                content.innerHTML = `
+                    <span class="inline-block bg-gray-600 text-white text-xs font-bold px-2 py-1 rounded mb-2">專屬路線分析</span>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">🛡️ [斷尾求生] 文組班群 ＋ 數B</h3>
+                    <p class="text-gray-700 leading-relaxed text-sm">雖然你還沒有明確方向，但客觀評估你的「體力條」，**你沒有足夠的本錢去死磕數A跟理科**。聽學長姐一句勸，退守文組跟數B，穩住你的總級分。高分的數B文組生，絕對贏過全科不及格的理組生！</p>
+                `;
+            } else if (type === 'FLEX_EXPLORER') {
+                content.className = 'p-6 rounded-xl border-2 border-[#009E96] bg-teal-50 shadow-sm text-left';
+                content.innerHTML = `
+                    <span class="inline-block bg-[#009E96] text-white text-xs font-bold px-2 py-1 rounded mb-2">專屬路線分析</span>
+                    <h3 class="text-2xl font-bold text-[#009E96] mb-3">🚀 [彈性探索者] 理組班群 ＋ 數A (試水溫)</h3>
+                    <p class="text-gray-700 leading-relaxed text-sm">因為你目前應付數理還有餘裕，在沒有明確愛好的情況下，**建議先選理組+數A挑戰看看**。因為「向下相容法則」，高二如果發現不行，高三跨考社會組或數B完全來得及；但如果先選文組，未來想回頭念理科幾乎不可能喔！</p>
+                `;
+            } else if (type === 'TOP_BIZ_HACKER') {
+                content.className = 'p-6 rounded-xl border-2 border-[#C5A922] bg-yellow-50 shadow-sm text-left';
+                content.innerHTML = `
+                    <span class="inline-block bg-[#C5A922] text-white text-xs font-bold px-2 py-1 rounded mb-2">專屬路線分析</span>
+                    <h3 class="text-2xl font-bold text-yellow-800 mb-3">👑 [商管破局者] 文組班群 ＋ 數A</h3>
+                    <p class="text-gray-700 leading-relaxed text-sm">這是一條少數人走的「勇者之路」。身在文組，但為了頂大的商管科系，你必須自己克服數A的難度。**這需要極強的自律**，因為你的文組同學在算開心數B時，你得埋頭苦幹。但只要考過，頂大商管就是你的天下！加油！</p>
+                `;
+            }
+        }
+
+        function resetWizard() {
+            wizardState = { q1: null, q2: null, q3: null };
+            document.getElementById('wizard-result').classList.add('hidden');
+            document.getElementById('wizard-start').classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>
