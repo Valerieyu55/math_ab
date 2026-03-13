@@ -338,7 +338,7 @@
 
                 <div id="wizard-start">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">準備好找出最適合的數學路線了嗎？</h3>
-                    <p class="text-gray-600 mb-6">只需回答幾個簡單的問題，我們將為您提供方向。</p>
+                    <p class="text-gray-600 mb-6">只需回答幾個簡單的問題，我們將為您提供最務實的選課建議。</p>
                     <button onclick="startWizard()"
                         class="px-8 py-3 rounded-full font-bold bg-[#C5A922] text-white btn-hover-effect text-lg shadow-md">開始測驗
                         🚀</button>
@@ -349,24 +349,38 @@
                     <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">孩子目前對未來大學的「目標學群」有明確方向嗎？</h3>
                     <div class="flex flex-col gap-3">
                         <button onclick="answerQ1('A')"
-                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">明確想讀
-                            理工、資訊、醫農，或想拚頂尖大學商管系。</button>
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#009E96] transition shadow-sm font-medium text-gray-700">1. 明確想讀
+                            理工、資訊、醫農，或想拚頂尖大學商管系（台政交）。</button>
                         <button onclick="answerQ1('B')"
-                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">明確想讀
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#8A0F7C] transition shadow-sm font-medium text-gray-700">2. 明確想讀
                             文史哲、法政、藝術、語言傳播或多數私立商管。</button>
                         <button onclick="answerQ1('U')"
-                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">完全沒方向，還在摸索中。</button>
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">3. 完全沒方向，文理科還在摸索中。</button>
                     </div>
                 </div>
 
                 <div id="wizard-q2" class="hidden">
-                    <span class="text-sm font-semibold text-gray-500 tracking-wider">步驟二：學習現況與意願</span>
-                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">孩子高一的數學學習狀況與抗壓性如何？</h3>
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">步驟二：學習現況與抗壓性</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">在還沒決定方向的情況下，孩子高一的數學表現如何？</h3>
                     <div class="flex flex-col gap-3">
                         <button onclick="answerQ2('struggle')"
-                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">學得非常痛苦、成績持續低迷，且不想強迫自己。</button>
-                        <button onclick="answerQ2('okay')"
-                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">成績中等，不排斥數學，願意為了保留選擇權挑戰看看。</button>
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#8A0F7C] transition shadow-sm font-medium text-gray-700">1. 學得很痛苦、成績持續低迷，遇到難題就想放棄。</button>
+                        <button onclick="answerQ2('average')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-gray-500 transition shadow-sm font-medium text-gray-700">2. 成績中等，不算特別有慧根，但願意花時間算。</button>
+                        <button onclick="answerQ2('strong')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#009E96] transition shadow-sm font-medium text-gray-700">3. 成績中上且算得有餘裕，對幾何與代數有直覺。</button>
+                    </div>
+                </div>
+
+                <!-- NEW Q3 -->
+                <div id="wizard-q3" class="hidden">
+                    <span class="text-sm font-semibold text-gray-500 tracking-wider">步驟三：機會成本評估</span>
+                    <h3 class="text-xl font-bold text-gray-800 mt-2 mb-6">如果選了數A，數學勢必佔據大量時間，其他科目的狀況是？</h3>
+                    <div class="flex flex-col gap-3">
+                        <button onclick="answerQ3('safe')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#009E96] transition shadow-sm font-medium text-gray-700">1. 英文/自然 等其他重點科目成績穩定，有足夠時間分配給數學。</button>
+                        <button onclick="answerQ3('risk')"
+                            class="w-full text-left px-6 py-4 rounded-lg bg-white border border-gray-300 hover:border-[#8A0F7C] transition shadow-sm font-medium text-gray-700">2. 英文/自然 其實也需要急救，如果數學再花兩倍時間，總成績可能會全面崩盤。</button>
                     </div>
                 </div>
 
@@ -374,7 +388,7 @@
                     <div id="result-content" class="p-6 rounded-xl bg-white border shadow-sm">
                     </div>
                     <button onclick="resetWizard()"
-                        class="mt-6 px-6 py-2 rounded-full text-gray-600 border border-gray-300 hover:bg-gray-100 transition">重新測驗</button>
+                        class="mt-6 px-6 py-2 rounded-full text-gray-600 border border-gray-300 hover:bg-gray-100 transition">↺ 重新測驗</button>
                 </div>
 
             </div>
@@ -646,7 +660,7 @@
 
         renderPathways('all');
 
-        let wizardState = { q1: null, q2: null };
+        let wizardState = { q1: null, q2: null, q3: null };
 
         function startWizard() {
             document.getElementById('wizard-start').classList.add('hidden');
@@ -658,9 +672,9 @@
             document.getElementById('wizard-q1').classList.add('hidden');
 
             if (answer === 'A') {
-                showResult('A');
+                showResult('MATH_A_TARGET');
             } else if (answer === 'B') {
-                showResult('B');
+                showResult('MATH_B_TARGET');
             } else {
                 document.getElementById('wizard-q2').classList.remove('hidden');
             }
@@ -671,9 +685,23 @@
             document.getElementById('wizard-q2').classList.add('hidden');
 
             if (answer === 'struggle') {
-                showResult('B_ESCAPE');
+                showResult('MATH_B_ESCAPE');
+            } else if (answer === 'strong') {
+                showResult('MATH_A_TRY');
             } else {
-                showResult('A_TRY');
+                // average
+                document.getElementById('wizard-q3').classList.remove('hidden');
+            }
+        }
+
+        function answerQ3(answer) {
+            wizardState.q3 = answer;
+            document.getElementById('wizard-q3').classList.add('hidden');
+
+            if (answer === 'safe') {
+                showResult('MATH_A_TRY');
+            } else {
+                showResult('MATH_B_STRATEGIC');
             }
         }
 
@@ -684,35 +712,41 @@
 
             content.className = 'p-6 rounded-xl border-2 shadow-sm text-left ';
 
-            if (type === 'A') {
+            if (type === 'MATH_A_TARGET') {
                 content.classList.add('math-a-border', 'bg-teal-50');
                 content.innerHTML = `
-                    <h3 class="text-2xl font-bold math-a-color mb-3">🎯 建議選擇：數學 A</h3>
-                    <p class="text-gray-700 leading-relaxed mb-3">既然目標明確是理工醫農或頂尖商管，**必選數A**。請為孩子做好心理建設，這條路數學運算要求深，但能精準對接未來大學科系的需求。</p>
+                    <h3 class="text-2xl font-bold math-a-color mb-3">🎯 唯一解：數學 A</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">既然目標明確是理工醫農或頂大商管，**此為必選**。請為孩子做好心理建設，這條路數學運算深、難度高，但能精準對接未來大學科系的要求。</p>
                 `;
-            } else if (type === 'B') {
+            } else if (type === 'MATH_B_TARGET') {
                 content.classList.add('math-b-border', 'bg-fuchsia-50');
                 content.innerHTML = `
-                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 建議選擇：數學 B</h3>
-                    <p class="text-gray-700 leading-relaxed mb-3">目標明確為文法藝術社會，請**果斷選數B**。減輕數學學習壓力，將省下來的時間拿去拚好國文、英文與社會，在文組科系會更有競爭力！</p>
+                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 最優解：數學 B</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">目標明確為文法藝術社會，請**果斷選數B**。無需增加不必要的學習壓力，將省下來的時間拿去拚好國文、英文與社會，在文組科系申請會更有絕對優勢！</p>
                 `;
-            } else if (type === 'B_ESCAPE') {
+            } else if (type === 'MATH_B_ESCAPE') {
                 content.classList.add('math-b-border', 'bg-fuchsia-50');
                 content.innerHTML = `
-                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 建議選擇：數學 B</h3>
-                    <p class="text-gray-700 leading-relaxed mb-3">評估孩子的數學學習現況與抗壓性，請**不要為了「保留選擇權」而硬選數A**。這會導致高中生活極度受挫。選擇數B，讓孩子找回學習自信更重要。</p>
+                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 停損解：數學 B</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">請**絕對不要為了「保留未來選擇權」而硬選數A**。這會導致高中生活極度受挫。選擇數B，讓孩子在數學找回一點成就感，高中不只有數學，維持學習熱忱更重要。</p>
                 `;
-            } else if (type === 'A_TRY') {
+            } else if (type === 'MATH_A_TRY') {
                 content.classList.add('math-a-border', 'bg-teal-50');
                 content.innerHTML = `
-                    <h3 class="text-2xl font-bold math-a-color mb-3">🎯 建議先挑戰：數學 A</h3>
-                    <p class="text-gray-700 leading-relaxed mb-3">在完全沒方向且不排斥數學的情況下，建議先修數A。因為**「向下相容」原則**，高三若發現想讀文組，學測依然可以跨考數B；但若選數B，未來想考理工則幾乎不可能補救落差。</p>
+                    <h3 class="text-2xl font-bold math-a-color mb-3">🎯 彈性解：先挑戰 數學 A</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">在未定向且仍有學習餘裕的情況下，建議先修數A。因為**「向下相容」原則**，若發現想讀文組，高三學測依然可以跨考數B；但若選數B，未來想考理工則幾乎不可能補救落差。</p>
+                `;
+            } else if (type === 'MATH_B_STRATEGIC') {
+                content.classList.add('math-b-border', 'bg-fuchsia-50');
+                content.innerHTML = `
+                    <h3 class="text-2xl font-bold math-b-color mb-3">🎯 策略解：退守 數學 B</h3>
+                    <p class="text-gray-700 leading-relaxed mb-3">雖然您屬於未定向，但基於**機會成本考量**，數A的龐大壓力可能會拖垮其他主科（如英文、自然）。與其在數A拿低分又賠上總級分，不如選數B穩住學業核心，用出色的總成績去申請更好的學校。</p>
                 `;
             }
         }
 
         function resetWizard() {
-            wizardState = { q1: null, q2: null };
+            wizardState = { q1: null, q2: null, q3: null };
             document.getElementById('wizard-result').classList.add('hidden');
             document.getElementById('wizard-start').classList.remove('hidden');
         }

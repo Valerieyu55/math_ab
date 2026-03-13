@@ -278,41 +278,61 @@
                 <div id="wizard-start" class="text-center py-4">
                     <span class="text-4xl mb-3 block">🧭</span>
                     <h3 class="text-lg font-bold text-gray-800 mb-2">尋找最適合的路線</h3>
-                    <p class="text-sm text-gray-600 mb-5">回答兩個問題，為您提供選課建議。</p>
+                    <p class="text-sm text-gray-600 mb-5">回答幾個問題，為您提供最務實的選課建議。</p>
                     <button onclick="startWizard()"
                         class="w-full py-3 rounded-xl font-bold bg-[#C5A922] text-white text-[15px] shadow-sm active:scale-95 transition">開始測驗</button>
                 </div>
 
                 <div id="wizard-q1" class="hidden">
-                    <span class="text-xs font-semibold text-[#8A0F7C] tracking-wider mb-1 block">步驟 1/2</span>
+                    <span class="text-xs font-semibold text-[#8A0F7C] tracking-wider mb-1 block">步驟 1/3</span>
                     <h3 class="text-base font-bold text-gray-800 mb-4 leading-normal">對未來「目標學群」有明確方向嗎？</h3>
                     <div class="flex flex-col gap-2.5">
                         <button onclick="answerQ1('A')"
-                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:bg-gray-100 text-sm font-medium text-gray-700 leading-snug">
-                            想讀：<span class="font-bold text-teal-700">理工、資訊、醫農、頂大商管</span>
+                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:border-[#009E96] text-sm font-medium text-gray-700 leading-snug">
+                            1. 想讀：<span class="font-bold text-teal-700">理工、資訊、醫農或頂大商管</span>
                         </button>
                         <button onclick="answerQ1('B')"
-                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:bg-gray-100 text-sm font-medium text-gray-700 leading-snug">
-                            想讀：<span class="font-bold text-fuchsia-800">文史哲、法政、藝術、多數私立商管</span>
+                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:border-[#8A0F7C] text-sm font-medium text-gray-700 leading-snug">
+                            2. 想讀：<span class="font-bold text-fuchsia-800">文史哲、法政、藝術、多數商管</span>
                         </button>
                         <button onclick="answerQ1('U')"
                             class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:bg-gray-100 text-sm font-medium text-gray-700 leading-snug">
-                            沒方向，還在摸索中
+                            3. 沒方向，文理科還在摸索中
                         </button>
                     </div>
                 </div>
 
                 <div id="wizard-q2" class="hidden">
-                    <span class="text-xs font-semibold text-[#8A0F7C] tracking-wider mb-1 block">步驟 2/2</span>
-                    <h3 class="text-base font-bold text-gray-800 mb-4 leading-normal">高一數學學習狀況與抗壓性？</h3>
+                    <span class="text-xs font-semibold text-[#8A0F7C] tracking-wider mb-1 block">步驟 2/3</span>
+                    <h3 class="text-base font-bold text-gray-800 mb-4 leading-normal">未定向前，高一數學學習狀況如何？</h3>
                     <div class="flex flex-col gap-2.5">
                         <button onclick="answerQ2('struggle')"
-                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:bg-gray-100 text-sm font-medium text-gray-700 leading-snug">
-                            學得很痛苦、成績低迷，<br>不想強迫自己。
+                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:border-[#8A0F7C] text-sm font-medium text-gray-700 leading-snug">
+                            1. 學得很痛苦、成績低迷，不想強迫自己。
                         </button>
-                        <button onclick="answerQ2('okay')"
+                        <button onclick="answerQ2('average')"
                             class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:bg-gray-100 text-sm font-medium text-gray-700 leading-snug">
-                            成績中等，不排斥數學，<br>願意為了機會拼拼看。
+                            2. 成績中等，不算有慧根，但願意花時間算。
+                        </button>
+                        <button onclick="answerQ2('strong')"
+                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:border-[#009E96] text-sm font-medium text-gray-700 leading-snug">
+                            3. 成績中上且有餘裕，對數學有直覺。
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NEW Q3 -->
+                <div id="wizard-q3" class="hidden">
+                    <span class="text-xs font-semibold text-[#8A0F7C] tracking-wider mb-1 block">步驟 3/3</span>
+                    <h3 class="text-base font-bold text-gray-800 mb-4 leading-normal">如果選數A，其他科目的時間分配？</h3>
+                    <div class="flex flex-col gap-2.5">
+                        <button onclick="answerQ3('safe')"
+                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:border-[#009E96] text-sm font-medium text-gray-700 leading-snug">
+                            1. 英文/自然成績穩，有時間分配給數學。
+                        </button>
+                        <button onclick="answerQ3('risk')"
+                            class="w-full text-left p-3.5 rounded-xl bg-gray-50 border border-gray-200 active:border-[#8A0F7C] text-sm font-medium text-gray-700 leading-snug">
+                            2. 其他科也要急救，再顧數A總成績會崩盤。
                         </button>
                     </div>
                 </div>
@@ -320,7 +340,7 @@
                 <div id="wizard-result" class="hidden text-center py-2">
                     <div id="result-content" class="p-5 rounded-xl border"></div>
                     <button onclick="resetWizard()"
-                        class="mt-4 px-5 py-2 rounded-full text-sm text-gray-600 border border-gray-300">重新測驗</button>
+                        class="mt-4 px-5 py-2 rounded-full text-sm text-gray-600 border border-gray-300">↺ 重新測驗</button>
                 </div>
             </div>
 
@@ -531,7 +551,7 @@
 
         renderPathways('all');
 
-        let wizardState = { q1: null };
+        let wizardState = { q1: null, q2: null, q3: null };
 
         function startWizard() {
             document.getElementById('wizard-start').classList.add('hidden');
@@ -542,15 +562,26 @@
             wizardState.q1 = answer;
             document.getElementById('wizard-q1').classList.add('hidden');
 
-            if (answer === 'A') showResult('A');
-            else if (answer === 'B') showResult('B');
+            if (answer === 'A') showResult('MATH_A_TARGET');
+            else if (answer === 'B') showResult('MATH_B_TARGET');
             else document.getElementById('wizard-q2').classList.remove('hidden');
         }
 
         function answerQ2(answer) {
+            wizardState.q2 = answer;
             document.getElementById('wizard-q2').classList.add('hidden');
-            if (answer === 'struggle') showResult('B_ESCAPE');
-            else showResult('A_TRY');
+
+            if (answer === 'struggle') showResult('MATH_B_ESCAPE');
+            else if (answer === 'strong') showResult('MATH_A_TRY');
+            else document.getElementById('wizard-q3').classList.remove('hidden');
+        }
+
+        function answerQ3(answer) {
+            wizardState.q3 = answer;
+            document.getElementById('wizard-q3').classList.add('hidden');
+
+            if (answer === 'safe') showResult('MATH_A_TRY');
+            else showResult('MATH_B_STRATEGIC');
         }
 
         function showResult(type) {
@@ -558,37 +589,43 @@
             const content = document.getElementById('result-content');
             container.classList.remove('hidden');
 
-            content.className = 'p-4 rounded-xl text-left shadow-sm ';
+            content.className = 'p-5 rounded-xl text-left shadow-sm ';
 
-            if (type === 'A') {
+            if (type === 'MATH_A_TARGET') {
                 content.classList.add('border-[#009E96]', 'bg-teal-50');
                 content.innerHTML = `
-                    <h3 class="text-lg font-bold text-[#009E96] mb-2 flex items-center gap-1">🎯 建議：數學 A</h3>
-                    <p class="text-gray-700 text-sm leading-snug">頂尖科系明確需求。這條路運算深，但精準對接大學需求。加油！</p>
+                    <h3 class="text-lg font-bold text-[#009E96] mb-2 flex items-center gap-1">🎯 唯一解：數學 A</h3>
+                    <p class="text-gray-700 text-sm leading-snug">頂尖科系明確需求。這條路運算深，但精準對接大學要求。請做好心理建設！</p>
                 `;
-            } else if (type === 'B') {
+            } else if (type === 'MATH_B_TARGET') {
                 content.classList.add('border-[#8A0F7C]', 'bg-fuchsia-50');
                 content.innerHTML = `
-                    <h3 class="text-lg font-bold text-[#8A0F7C] mb-2 flex items-center gap-1">🎯 建議：數學 B</h3>
-                    <p class="text-gray-700 text-sm leading-snug">目標明確！減輕數學壓力，投資國英社，提升文法商競爭力。</p>
+                    <h3 class="text-lg font-bold text-[#8A0F7C] mb-2 flex items-center gap-1">🎯 最優解：數學 B</h3>
+                    <p class="text-gray-700 text-sm leading-snug">目標明確！無需增加壓力，投資時間在國英社，提升文組申請絕對優勢。</p>
                 `;
-            } else if (type === 'B_ESCAPE') {
+            } else if (type === 'MATH_B_ESCAPE') {
                 content.classList.add('border-[#8A0F7C]', 'bg-fuchsia-50');
                 content.innerHTML = `
-                    <h3 class="text-lg font-bold text-[#8A0F7C] mb-2 flex items-center gap-1">🎯 建議：數學 B</h3>
-                    <p class="text-gray-700 text-sm leading-snug">不要為「保留選擇權」硬擠數A導致受挫。找回讀書自信更重要。</p>
+                    <h3 class="text-lg font-bold text-[#8A0F7C] mb-2 flex items-center gap-1">🎯 停損解：數學 B</h3>
+                    <p class="text-gray-700 text-sm leading-snug">不要為「保留選擇權」硬擠數A導致受挫。守住學習信心更重要。</p>
                 `;
-            } else if (type === 'A_TRY') {
+            } else if (type === 'MATH_A_TRY') {
                 content.classList.add('border-[#009E96]', 'bg-teal-50');
                 content.innerHTML = `
-                    <h3 class="text-lg font-bold text-[#009E96] mb-2 flex items-center gap-1">🎯 建議：先試 數學 A</h3>
-                    <p class="text-gray-700 text-sm leading-snug">能力許可且未定向前，先修數A。學測仍能向下跨考數B，保留彈性。</p>
+                    <h3 class="text-lg font-bold text-[#009E96] mb-2 flex items-center gap-1">🎯 彈性解：先試 數學 A</h3>
+                    <p class="text-gray-700 text-sm leading-snug">能力許可且未定向前，先修數A。學測仍能向下相容跨考數B，保留最大彈性。</p>
+                `;
+            } else if (type === 'MATH_B_STRATEGIC') {
+                content.classList.add('border-[#8A0F7C]', 'bg-fuchsia-50');
+                content.innerHTML = `
+                    <h3 class="text-lg font-bold text-[#8A0F7C] mb-2 flex items-center gap-1">🎯 策略解：退守 數學 B</h3>
+                    <p class="text-gray-700 text-sm leading-snug">機會成本考量！與其數A低分又拖垮其他主科，不如選數B穩住學業核心，拚高總級分。</p>
                 `;
             }
         }
 
         function resetWizard() {
-            wizardState = { q1: null };
+            wizardState = { q1: null, q2: null, q3: null };
             document.getElementById('wizard-result').classList.add('hidden');
             document.getElementById('wizard-start').classList.remove('hidden');
         }
